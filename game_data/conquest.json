@@ -1,0 +1,32 @@
+[
+  {
+    "start_time": "12:00",
+    "end_time": "12:29",
+    "name": "Conquest"
+  },
+  {
+    "start_time": "19:30",
+    "end_time": "19:59",
+    "name": "Conquest"
+  },
+  {
+    "start_time": "21:30",
+    "end_time": "21:59",
+    "name": "Conquest"
+  },
+  {
+    "start_time": "23:30",
+    "end_time": "23:59",
+    "name": "Conquest"
+  },
+  {
+    "start_time": "25:30",
+    "end_time": "25:59",
+    "name": "Conquest"
+  },
+  {
+    "start_time": "27:30",
+    "end_time": "27:59",
+    "name": "Conquest"
+  }
+]

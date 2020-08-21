@@ -1,0 +1,32 @@
+[
+  {
+    "start_time": "11:30",
+    "end_time": "11:59",
+    "name": "Guerrilla"
+  },
+  {
+    "start_time": "18:30",
+    "end_time": "18:59",
+    "name": "Guerrilla"
+  },
+  {
+    "start_time": "20:30",
+    "end_time": "20:59",
+    "name": "Guerrilla"
+  },
+  {
+    "start_time": "22:30",
+    "end_time": "22:59",
+    "name": "Guerrilla"
+  },
+  {
+    "start_time": "24:30",
+    "end_time": "24:59",
+    "name": "Guerrilla"
+  },
+  {
+    "start_time": "26:30",
+    "end_time": "26:59",
+    "name": "Guerrilla"
+  }
+]

@@ -1,0 +1,6 @@
+[
+  {
+    "id": "mainHelpMessage",
+    "message": "Hello, since you didn't use a command, I am displaying this help message.\nTo see the time remaining before the next guerilla event, use 'guerr'\nTo see the time remaining before the next conquest event, use 'conq'.\nUse 'help' to display this message"
+  }
+]

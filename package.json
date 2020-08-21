@@ -1,0 +1,10 @@
+{
+  "name": "bot-alice",
+  "version": "1.0.0",
+  "description": "Simple discord bot for sinoalice guild",
+  "main": "index.js",
+  "author": "LolnationCH",
+  "dependencies": {
+    "discord.js": "^12.3.1"
+  }
+}
