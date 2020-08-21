@@ -23,7 +23,7 @@ List of commands :
 
 ## Setup
 
-You need to create a folder called `usr_data` at root level. This folder will theses files:
+You need to create a folder called `usr_data` at root level. This folder will have theses files:
 
 - guild_masters.json : Contains a list of people with full bot commands. User defined.
 - config.json : The config for the bot. User defined.
