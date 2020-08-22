@@ -1,1 +1,1 @@
-nodemon --inspect index.js --ignore "*.json"
+node index.js > stdout.txt 2> stderr.txt &

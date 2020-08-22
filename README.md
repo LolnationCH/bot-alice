@@ -105,11 +105,10 @@ npm install
 
 This will install all the node modules you need to have to be able to run the bot.
 
-I use `nodemon` to run the bot, you can choose other programm to run it, you choice.
-If you also want to use `nodemon`, simply type `./run.sh` if you are using bash. Otherwise, type this in a cmd:
+To run the bot, you can use `run.sh` or simply type in a cmd :
 
 ```cmd
-nodemon --inspect index.js --ignore "*.json"
+node index.js > stdout.txt 2> stderr.txt &
 ```
 
-When you want to close the bot, simply ctrl-c in the cmd to terminate the process. You can also close the window, it will have the same effect.
+Simply kill the node process if you want to kill the bot (or shutdown your pc :) )
