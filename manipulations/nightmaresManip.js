@@ -37,11 +37,12 @@ function FetchUsers(OptionArr) {
       if (x.users.length === 0)
         ret += "";
       else {
-        if (x.colo_skill.toLowerCase().includes(OptionArr[i]))
+	var optionLowered = OptionArr[i].toLowerCase();
+        if (x.colo_skill.toLowerCase().includes(optionLowered))
           ret += `${x.colo_skill} : ${PrettyPrintUser(x.users)}\n`;
         else {
           x.nightmares.forEach( (y) => {
-            if (y.toLowerCase().includes(OptionArr[i]))
+            if (y.toLowerCase().includes(optionLowered))
               ret += `${x.colo_skill} : ${PrettyPrintUser(x.users)}\n`;
           })
         }
