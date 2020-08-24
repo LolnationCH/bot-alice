@@ -50,7 +50,7 @@ function FetchUsers(OptionArr) {
     });
   }
   if (ret.replace("\n", "") === "")
-    return undefined;
+    return "No user found";
   return ret;
 }
 

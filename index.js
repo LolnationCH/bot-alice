@@ -3,7 +3,6 @@ const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 
 const eventManip = require('./manipulations/eventManip');
 const nightmaresManip = require('./manipulations/nightmaresManip');
-const coliseumManip = require('./manipulations/coliseumManip');
 const helpMsgs = require('./helpMsg');
 
 const gmUsernames = require('./usr_data/guild_masters.json');
@@ -68,10 +67,6 @@ client.on('message', msg => {
     else if (messages[1] === "conq"){
       var events = eventManip.GetActiveEvents(new Date(), "conquest"); // Get the events that are possible for today
       msg.author.send(eventManip.PrettyPrintEvent(events[0])); // Send a dm to the user
-    }
-    else if (access_level === AccessLevel["GM"] && 
-             messages[1] === "order"){
-      msg.reply(coliseumManip.GetColiseumNightmareInfo())
     }
     else if (access_level === AccessLevel["GM"] &&
              messages[1] === "whohas"){
