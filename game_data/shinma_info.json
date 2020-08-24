@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Glacial Calamity",
+    "call_conditions": [
+      "Staff",
+      "Blade",
+      "Polearm"
+    ],
+    "url_img":"https://i.imgur.com/OQoVofP.png"
+  },
+  {
+    "name": "Tempestuous Calamity",
+    "call_conditions": [
+      "Tome",
+      "Heavy",
+      "Projectile"
+    ],
+    "url_img":""
+  },
+  {
+    "name": "Solar Calamity",
+    "call_conditions": [
+      "Tome",
+      "Blade",
+      "Polearm"
+    ],
+    "url_img":""
+  },
+  {
+    "name": "Meteoric Calamity",
+    "call_conditions": [
+      "Instrument",
+      "Heavy",
+      "Projectile"
+    ],
+    "url_img":"https://i.imgur.com/MSznpjf.png"
+  },
+  {
+    "name": "Thunderous Calamity",
+    "call_conditions": [
+      "Instrument",
+      "Blade",
+      "Polearm"
+    ],
+    "url_img":""
+  },
+  {
+    "name": "Seismic Calamity",
+    "call_conditions": [
+      "Instrument",
+      "Blade",
+      "Polearm"
+    ],
+    "url_img":""
+  }
+]

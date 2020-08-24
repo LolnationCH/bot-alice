@@ -3,6 +3,7 @@ const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 
 const eventManip = require('./manipulations/eventManip');
 const nightmaresManip = require('./manipulations/nightmaresManip');
+const shinmaManip = require('./manipulations/shinmaManip');
 const helpMsgs = require('./helpMsg');
 
 const gmUsernames = require('./usr_data/guild_masters.json');
@@ -68,11 +69,30 @@ client.on('message', msg => {
       var events = eventManip.GetActiveEvents(new Date(), "conquest"); // Get the events that are possible for today
       msg.author.send(eventManip.PrettyPrintEvent(events[0])); // Send a dm to the user
     }
-    else if (access_level === AccessLevel["GM"] &&
-             messages[1] === "whohas"){
-      var ret = nightmaresManip.FetchUsers(messages.slice(2));
-      if (ret !== undefined)
-        msg.reply(ret);
+    else if (access_level === AccessLevel["GM"]) {
+      if (messages[1] === "whohas"){
+        var ret = nightmaresManip.FetchUsers(messages.slice(2));
+        if (ret !== undefined)
+          msg.reply(ret);
+      }
+      else if (messages[1] === "setdem"){
+        var mes = messages.slice(2);
+        if (mes.length !== 2)
+          msg.reply("You need to specify two demon");
+        else {
+          var ret = shinmaManip.SetShinmaForColiseum(mes[0], mes[1]);
+          if (ret !== undefined)
+            msg.reply(ret);
+        }
+      }
+      else if (messages[1] === "usetdem"){
+        shinmaManip.UnsetShinma();
+      }
+      else if (messages[1] === "getdem"){
+        var shinmaInfo = shinmaManip.GetShinmaInfo();
+        for (var i = 0; i < shinmaInfo.length; i++)
+          msg.channel.send(shinmaInfo[i][0], shinmaInfo[i][1]);
+      }
     }
     else
       msg.reply(helpMsgs.GetHelpMessage("mainHelpMessage"));
