@@ -27,7 +27,7 @@ function CalculateAccessLevel(authorUsername){
     return AccessLevel["PARTIAL"];
 }
 
-async function UpdateReaction(reaction,) {
+async function UpdateReaction(reaction) {
   if (reaction.partial && reaction.message.id === config.messageId) {
 		try {
       await reaction.fetch();
@@ -39,6 +39,11 @@ async function UpdateReaction(reaction,) {
   if (reaction.message.id === config.messageId){
     await nightmaresManip.ParseAllReactionFromMessage(reaction);
   }
+}
+
+async function SendMultipleMessageAndFiles(msg, MessageAndFiles){
+  for (var i = 0; i < MessageAndFiles.length; i++)
+    await msg.channel.send(MessageAndFiles[i][0], MessageAndFiles[i][1]);
 }
 
 client.on('ready', () => {
@@ -90,8 +95,7 @@ client.on('message', msg => {
       }
       else if (messages[1] === "getdem"){
         var shinmaInfo = shinmaManip.GetShinmaInfo();
-        for (var i = 0; i < shinmaInfo.length; i++)
-          msg.channel.send(shinmaInfo[i][0], shinmaInfo[i][1]);
+        SendMultipleMessageAndFiles(msg, shinmaInfo);
       }
     }
     else
