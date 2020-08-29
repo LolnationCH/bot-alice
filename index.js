@@ -1,108 +1,88 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
-const eventManip = require('./manipulations/eventManip');
-const nightmaresManip = require('./manipulations/nightmaresManip');
-const shinmaManip = require('./manipulations/shinmaManip');
+// Bot code
 const helpMsgs = require('./helpMsg');
+const GmCmds = require('./commands/gm_cmds');
+const MemberCmds = require('./commands/member_cmds');
 
-const gmUsernames = require('./usr_data/guild_masters.json');
+// Bot data
 const config = require('./usr_data/config.json');
-
 const AccessLevel = {
   "GM" : "0",
-  "PARTIAL" : "1",
+  "MEMBER" : "1",
   "NONE" : "-1"
 }
 
 /**
- * 
- * @param {string} authorUsername 
+ * Returns the AccessLevel of the user. To be use with comparaison to the object.
+ * @param {Collection<String>} memberRoles
  * @returns access level
  */
-function CalculateAccessLevel(authorUsername){
-  if (gmUsernames.includes(authorUsername))
+function CalculateAccessLevel(memberRoles){
+  var IsGm = false;
+  config.roles.gms.forEach((x) => {
+    if (memberRoles.cache.has(x))
+      IsGm = true;
+  })
+  if (IsGm)
     return AccessLevel["GM"];
-  else
-    return AccessLevel["PARTIAL"];
+
+  var IsMember = false;
+  config.roles.members.forEach((x) => {
+    if (memberRoles.cache.has(x))
+      IsMember = true;
+  })
+  if (IsMember)
+    return AccessLevel["MEMBER"];
+
+  return AccessLevel["NONE"];
+  
 }
 
-async function UpdateReaction(reaction) {
-  if (reaction.partial && reaction.message.id === config.messageId) {
-		try {
-      await reaction.fetch();
-		} catch (error) {
-			console.log('Something went wrong when fetching the message: ', error);
-			return;
-    }
-  }
-  if (reaction.message.id === config.messageId){
-    await nightmaresManip.ParseAllReactionFromMessage(reaction);
-  }
-}
-
-async function SendMultipleMessageAndFiles(msg, MessageAndFiles){
-  for (var i = 0; i < MessageAndFiles.length; i++)
-    await msg.channel.send(MessageAndFiles[i][0], MessageAndFiles[i][1]);
+/**
+ * Calculate the prefix, command and option the user pass to the bot.
+ * @param {Array<String>} messages 
+ * @returns an array containing the prefix, command and option. [String, String, Array<String>]
+ */
+function GetMessagesParameters(messages){
+  return [messages[0], messages[1], messages.slice(2)];
 }
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('messageReactionAdd', async (reaction) => {
-	UpdateReaction(reaction);
-});
-
-client.on('messageReactionRemove', async (reaction, user) => {
-	UpdateReaction(reaction);
-});
-
-
+// Handles the users commands
 client.on('message', msg => {
+  if (msg.member === null || msg.member.roles === undefined)
+    return; // If msg author has no roles, simply return.
+  
+  // Get message contents
   var messages = msg.content.split(" ");
-  var access_level = CalculateAccessLevel(msg.author.username.toLowerCase());
+  const [prefix, command, optionArr] = GetMessagesParameters(messages);
 
-  if (access_level !== AccessLevel["NONE"] && 
-      messages[0] === config.prefix)
+  // Get message access level
+  const access_level = CalculateAccessLevel(msg.member.roles);
+
+  // Check if user has access to the bot
+  if (access_level !== AccessLevel["NONE"] &&
+      prefix === config.prefix)
   {
-    if (messages[1] === "guerr") {
-      var events = eventManip.GetActiveEvents(new Date(), "guerrilla"); // Get the events that are possible for today
-      msg.author.send(eventManip.PrettyPrintEvent(events[0])); // Send a dm to the user
+    // Execute the command the user wants if he has the right to.
+    var hasHandledCommand = false;
+    if (access_level === AccessLevel["GM"]) {
+      hasHandledCommand = GmCmds.HandleGmCommands(msg, command, optionArr);
     }
-    else if (messages[1] === "conq"){
-      var events = eventManip.GetActiveEvents(new Date(), "conquest"); // Get the events that are possible for today
-      msg.author.send(eventManip.PrettyPrintEvent(events[0])); // Send a dm to the user
+    if (!hasHandledCommand) {
+      hasHandledCommand = MemberCmds.HandleMembersCommands(msg, command, optionArr);
     }
-    else if (access_level === AccessLevel["GM"]) {
-      if (messages[1] === "whohas"){
-        var ret = nightmaresManip.FetchUsers(messages.slice(2));
-        if (ret !== undefined)
-          msg.reply(ret);
-      }
-      else if (messages[1] === "setdem"){
-        var mes = messages.slice(2);
-        if (mes.length !== 2)
-          msg.reply("You need to specify two demon");
-        else {
-          var ret = shinmaManip.SetShinmaForColiseum(mes[0], mes[1]);
-          if (ret !== undefined)
-            msg.reply(ret);
-        }
-      }
-      else if (messages[1] === "usetdem"){
-        shinmaManip.UnsetShinma();
-      }
-      else if (messages[1] === "getdem"){
-        var shinmaInfo = shinmaManip.GetShinmaInfo();
-        SendMultipleMessageAndFiles(msg, shinmaInfo);
-      }
-    }
-    else
-      msg.reply(helpMsgs.GetHelpMessage("mainHelpMessage"));
 
-    // Remove the user message
-    msg.delete({timeout:1000}); 
+    // Send help message if the message wasn't handled.
+    if (!hasHandledCommand) {
+      msg.reply(helpMsgs.GetHelpMessage("mainHelpMessage"));
+      msg.delete({timeout:1000});
+    }
   }
 });
 

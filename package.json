@@ -5,6 +5,7 @@
   "main": "index.js",
   "author": "LolnationCH",
   "dependencies": {
-    "discord.js": "^12.3.1"
+    "discord.js": "^12.3.1",
+    "request": "^2.81.0"
   }
 }
