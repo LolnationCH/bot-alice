@@ -31,7 +31,6 @@ function GetUsersWithNightmares(NightmaresArr, userObjects){
   return [users_arr, nightmares_name]
 }
 
-
 function FetchUsers(OptionArr, msg){
   request(config.nightmare_url, { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
@@ -49,6 +48,35 @@ function FetchUsers(OptionArr, msg){
   });
 }
 
+function FetchUserNightmares(msg, Username){
+  if (Username === undefined) {
+    msg.reply("You must specify an Username");
+    msg.delete({timeout:1000}); 
+    return;
+  }
+
+  request(config.nightmare_url, { json: true }, (err, res, body) => {
+    if (err) { return console.log(err); }
+    const entry = body.feed.entry;
+    var userObjects = ParseSheet(entry);
+
+    var ret = "No user found";
+    var userInfo = userObjects.filter((x) => x.username.toLowerCase().includes(Username.toLowerCase()))[0];
+    
+    if (userInfo !== undefined){
+      var ret = `${userInfo.username} : `;
+      userInfo.nightmares.forEach((x, i) => {
+        ret += `\n${x}, `
+      });
+      ret = ret.slice(0, ret.length - 2);
+    }
+
+    msg.reply(ret);
+    msg.delete({timeout:1000}); 
+  });
+}
+
 module.exports = {
-  FetchUsers
+  FetchUsers,
+  FetchUserNightmares
 }

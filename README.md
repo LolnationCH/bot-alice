@@ -20,10 +20,12 @@ List of commands available to every member:
   - Conquest may not occur if no conquest is currently available to the users
 
 List of commands available to every gm (they also have access to the commands defined above):
+
 - whohas : Show the user who has the nightmare queryed.
 - setdem : Set the demons of the coliseum
 - usetdem : Un-set the demons of the coliseum (you can simply re-called the `setdem` command to replace demons)
 - getdem : Show the pictures for the demon (uses pictures of A-S)
+- list : List a user nightmares
 
 ## Setup
 

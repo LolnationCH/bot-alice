@@ -51,6 +51,9 @@ function HandleGmCommands(msg, command, optionArr){
       SendMultipleMessageAndFiles(msg, shinmaManip.GetShinmaInfo());
       msg.delete({timeout:1000});
       break;
+    case "list":
+      nightmaresManip.FetchUserNightmares(msg, optionArr[0]);
+      break;
     default:
       return false;
   }
