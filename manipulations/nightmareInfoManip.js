@@ -30,7 +30,6 @@ function MakeNightmareObj(strObj, propsName){
     while (iconName.length < 4)
         iconName = '0' + iconName;
     obj["IconUrl"] = `https://sinoalice.game-db.tw/images/card/CardS${iconName}.png`;
-    obj["NameEN"] = removeDiacritics(obj.NameEN);
 
     return obj;
 }
@@ -59,7 +58,7 @@ function FilterByNightmareNames(Nightmares, nightmareNames) {
   return Nightmares.filter((x) => {
     var isIncluded = false;
     nightmareNamesLowered.forEach((y) => {
-      if (x.NameEN.toLowerCase().includes(y))
+      if (removeDiacritics(x.NameEN).toLowerCase().includes(y))
         isIncluded = true;
     });
     return isIncluded;
@@ -76,7 +75,7 @@ function FilterByNightmareSkillName(Nightmares, skillNames) {
   return Nightmares.filter((x) => {
     var isIncluded = false;
     skillNamesLowered.forEach((y) => {
-      if (x.GvgSkillEN.toLowerCase().includes(y))
+      if (removeDiacritics(x.GvgSkillEN).toLowerCase().includes(y))
         isIncluded = true;
     });
     return isIncluded;
@@ -108,7 +107,7 @@ async function GetGlobalNightmaresIdAndName(){
   const Names = body2.Name.split('|'); // Array of names (string)
 
   var NightmaresInfo = IDS.reduce((map, obj, index) => {
-    map[obj] = removeDiacritics(Names[index]);
+    map[obj] = Names[index];
     return map;
   }, {});
   
@@ -134,13 +133,18 @@ function GetNightmareInfo(msg, filterCondition, filterFunc){
 
       var nightInfo = filterFunc(Nightmares, filterCondition);
       
-      msg.reply(nightInfo.map(x => PrettyPrintNightmare(x)).join('\n\n'));
+      if (nightInfo.length !== 0)
+        msg.reply("\n" + nightInfo.map(x => PrettyPrintNightmare(x)).join('\n\n'));
+      else
+        msg.reply("No nightmare found");
       msg.delete({timeout:1000}); 
     } catch (error) {
       console.log(error);
     }
   })();
 }
+
+// GetNightmareInfo({reply: console.log, delete: ()=>{}}, ["Jorm"], FilterByNightmareNames);
 
 module.exports = {
   GetNightmareInfo,
