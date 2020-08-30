@@ -1,6 +1,6 @@
 const nightmaresManip = require('../manipulations/nightmaresManip');
 const nightmareInfoManip = require('../manipulations/nightmareInfoManip');
-const shinmaManip = require('../manipulations/shinmaManip');
+const coliseumManip = require('../manipulations/coliseumManip');
 
 /**
  * Set the demons for the coliseum
@@ -11,7 +11,7 @@ function HandleSetDemon(msg, optionArr){
   if (optionArr.length !== 2)
     msg.reply("You need to specify two demon");
   else {
-    var ret = shinmaManip.SetShinmaForColiseum(optionArr[0], optionArr[1]);
+    var ret = coliseumManip.SetShinmaForColiseum(optionArr[0], optionArr[1]);
     if (ret !== undefined)
       msg.reply(ret);
   }
@@ -45,11 +45,18 @@ function HandleGmCommands(msg, command, optionArr){
       HandleSetDemon(msg, optionArr);
       break;
     case "usetdem":
-      shinmaManip.UnsetShinma();
+      coliseumManip.UnsetShinma();
       msg.delete({timeout:1000});
       break;
     case "getdem":
-      SendMultipleMessageAndFiles(msg, shinmaManip.GetShinmaInfo());
+      SendMultipleMessageAndFiles(msg, coliseumManip.GetShinmaInfo());
+      msg.delete({timeout:1000});
+      break;
+    case "setcoli":
+      coliseumManip.SetColiseumStrategy(msg, optionArr[0]);
+      break;
+    case "getcoli":
+      msg.reply(coliseumManip.GetColiseumStrategy());
       msg.delete({timeout:1000});
       break;
     case "list":

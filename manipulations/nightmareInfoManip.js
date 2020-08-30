@@ -146,8 +146,6 @@ function GetNightmareInfo(msg, filterCondition, filterFunc){
   })();
 }
 
-GetNightmareInfo({reply: console.log, delete: ()=>{}}, ["Jorm"], FilterByNightmareNames);
-
 module.exports = {
   GetNightmareInfo,
   FilterByNightmareNames,

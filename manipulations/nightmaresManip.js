@@ -50,7 +50,7 @@ function FetchUsers(OptionArr, msg){
       msg.delete({timeout:1000}); 
 
     } catch (error) {
-      console.log(response.body);
+      console.log(error);
     }
   })();
 }
