@@ -1,6 +1,8 @@
 const got = require('got');
 var removeDiacritics = require('diacritics').remove;
 
+const NightmareTranslation = require('./translation').NightmareTranslation;
+
 const url_feed = "https://sinoalice.game-db.tw/package/alice_nightmares-en.js";
 const url_feed_global = "https://sinoalice.game-db.tw/package/alice_nightmaresglobal.js"; 
 
@@ -41,7 +43,7 @@ function MakeNightmareObj(strObj, propsName){
 function PrettyPrintNightmare(nightmareObj){
   return `Name : ${RarityToStr[nightmareObj.Rarity]} ${nightmareObj.NameEN}\n` +
          `Coliseum Skill     : ${nightmareObj.GvgSkillEN}\n`       +
-         //`Skill details      : ${nightmareObj.GvgSkillDetail}\n`   +
+         `Skill details      : ${NightmareTranslation.Skill_JapaneseToEnglish(nightmareObj.GvgSkillDetail)}\n`   +
          `Coliseum SP cost   : ${nightmareObj.GvgSkillSP}\n`     +
          `Coliseum Prep time : ${nightmareObj.GvgSkillLead}\n` +
          `Coliseum duration  : ${nightmareObj.GvgSkillDur}\n`   +
@@ -144,7 +146,7 @@ function GetNightmareInfo(msg, filterCondition, filterFunc){
   })();
 }
 
-// GetNightmareInfo({reply: console.log, delete: ()=>{}}, ["Jorm"], FilterByNightmareNames);
+GetNightmareInfo({reply: console.log, delete: ()=>{}}, ["Jorm"], FilterByNightmareNames);
 
 module.exports = {
   GetNightmareInfo,
