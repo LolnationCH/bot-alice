@@ -1,4 +1,5 @@
 const nightmaresManip = require('../manipulations/nightmaresManip');
+const nightmareInfoManip = require('../manipulations/nightmareInfoManip');
 const shinmaManip = require('../manipulations/shinmaManip');
 
 /**
@@ -53,6 +54,12 @@ function HandleGmCommands(msg, command, optionArr){
       break;
     case "list":
       nightmaresManip.FetchUserNightmares(msg, optionArr[0]);
+      break;
+    case "night":
+      nightmareInfoManip.GetNightmareInfo(msg, optionArr, nightmareInfoManip.FilterByNightmareNames);
+      break;
+    case "skill":
+      nightmareInfoManip.GetNightmareInfo(msg, optionArr, nightmareInfoManip.FilterByNightmareSkillName);
       break;
     default:
       return false;

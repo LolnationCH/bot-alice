@@ -26,6 +26,8 @@ List of commands available to every gm (they also have access to the commands de
 - usetdem : Un-set the demons of the coliseum (you can simply re-called the `setdem` command to replace demons)
 - getdem : Show the pictures for the demon (uses pictures of A-S)
 - list : List a user nightmares
+- night : Get information for specified nightmares
+- skill : Get the list of nightmares (with information) with specified skill
 
 ## Setup
 
