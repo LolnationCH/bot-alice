@@ -2,7 +2,7 @@ const got = require('got');
 var removeDiacritics = require('diacritics').remove;
 
 const url_feed = "https://sinoalice.game-db.tw/package/alice_nightmares-en.js";
-const url_feed_global = "https://sinoalice.game-db.tw/package/alice_nightmaresglobal.js?v=1185"; 
+const url_feed_global = "https://sinoalice.game-db.tw/package/alice_nightmaresglobal.js"; 
 
 const RarityToStr = {
   1 : 'C',
@@ -41,10 +41,12 @@ function MakeNightmareObj(strObj, propsName){
  */
 function PrettyPrintNightmare(nightmareObj){
   return `Name : ${RarityToStr[nightmareObj.Rarity]} ${nightmareObj.NameEN}\n` +
-         `Coliseum Skill : ${nightmareObj.GvgSkillEN}\n` +
-         `Coliseum SP cost : ${nightmareObj.GvgSkillSP}\n` +
-         `Coliseum duration : ${nightmareObj.GvgSkillDur}\n` +
-         `Link to database : ${nightmareObj.Url}`;
+         `Coliseum Skill     : ${nightmareObj.GvgSkillEN}\n`       +
+         //`Skill details      : ${nightmareObj.GvgSkillDetail}\n`   +
+         `Coliseum SP cost   : ${nightmareObj.GvgSkillSP}\n`     +
+         `Coliseum Prep time : ${nightmareObj.GvgSkillLead}\n` +
+         `Coliseum duration  : ${nightmareObj.GvgSkillDur}\n`   +
+         `Link to database   : ${nightmareObj.Url}`;
 }
 
 /**
@@ -99,10 +101,18 @@ async function GetNightmaresInfo(){
 /**
  * Returns the IDs of all the nightmare currently in global
  */
-async function GetGlobalNightmaresId(){
+async function GetGlobalNightmaresIdAndName(){
   const response2 = await got(url_feed_global);
   const body2 = await JSON.parse(response2.body);
-  return body2.ID.split('|'); 
+  const IDS = body2.ID.split('|'); // Array of id (string)
+  const Names = body2.Name.split('|'); // Array of names (string)
+
+  var NightmaresInfo = IDS.reduce((map, obj, index) => {
+    map[obj] = removeDiacritics(Names[index]);
+    return map;
+  }, {});
+  
+  return NightmaresInfo;
 }
 
 /**
@@ -115,11 +125,15 @@ function GetNightmareInfo(msg, filterCondition, filterFunc){
   (async () => {
     try {
       var Nightmares = await GetNightmaresInfo();
-      const globalNightmareId = await GetGlobalNightmaresId();
-      Nightmares = Nightmares.filter((x) => globalNightmareId.includes(x.UniqueID));
+      const globalNames = await GetGlobalNightmaresIdAndName();
+      Nightmares = Nightmares.filter((x) => x.UniqueID in globalNames)
+                             .map((x) => {
+                                x.NameEN = globalNames[x.UniqueID];
+                                return x;
+                              });
 
       var nightInfo = filterFunc(Nightmares, filterCondition);
-
+      
       msg.reply(nightInfo.map(x => PrettyPrintNightmare(x)).join('\n\n'));
       msg.delete({timeout:1000}); 
     } catch (error) {
