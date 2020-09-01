@@ -116,6 +116,12 @@ async function GetGlobalNightmaresIdAndName(){
   return NightmaresInfo;
 }
 
+async function SendNightmareInfos(msg, nightInfo){
+  nightInfo = nightInfo.length > 5 ? nightInfo.filter((x) => x.Rarity >= 4) : nightInfo;
+  for (var i = 0; i < nightInfo.length; i++)
+    await msg.author.send(PrettyPrintNightmare(nightInfo[i]));
+}
+
 /**
  * Send a reply with the information asked.
  * @param {Message} msg Message object from Discord.js
@@ -136,7 +142,7 @@ function GetNightmareInfo(msg, filterCondition, filterFunc){
       var nightInfo = filterFunc(Nightmares, filterCondition);
       
       if (nightInfo.length !== 0)
-        msg.reply("\n" + nightInfo.map(x => PrettyPrintNightmare(x)).join('\n\n'));
+        SendNightmareInfos(msg, nightInfo);
       else
         msg.reply("No nightmare found");
       msg.delete({timeout:1000}); 
