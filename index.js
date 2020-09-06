@@ -5,6 +5,7 @@ const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 const helpMsgs = require('./helpMsg');
 const GmCmds = require('./commands/gm_cmds');
 const MemberCmds = require('./commands/member_cmds');
+const reminders = require('./reminders');
 
 // Bot data
 const config = require('./usr_data/config.json');
@@ -49,8 +50,9 @@ function GetMessagesParameters(messages){
   return [messages[0], messages[1], messages.slice(2)];
 }
 
-client.on('ready', () => {
+client.on('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  reminders.ConfigureAndStartWarningCronJobs(client);
 });
 
 // Handles the users commands
