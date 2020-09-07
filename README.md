@@ -8,6 +8,8 @@ Simple discord bot for sinoalice guild
 - Keeping track of the nightmare list of the guild members with a post and reaction
 - Seeing who has which nightmare.
 - Set and show which demon will be call during coliseum.
+- Reminders (sending message to specific channels) with a cron job.
+- Reminders for events sent to specific channel (can be turn off with "eventReminder")
 
 ## Commands
 
@@ -42,14 +44,29 @@ Here's a example of the content inside a config.json :
 ```json
 {
   "prefix": "!alice",
-  "bot_token" : "token",
+  "bot_token" : "TOKEN",
   "nightmare_url": "https://spreadsheets.google.com/feeds/cells/SPREADSHEETID/1/public/full?alt=json",
   "roles" : {
     "gms" : ["ROLE_ID_1", "ROLE_ID_2", "ROLE_ID_3"],
     "members" : ["ROLE_ID_4"]
-  }
+  },
+  "warningChannel" : "CHANNEL_ID",
+  "wanings": [
+    {
+      "cronTime" : "CRON_TIME",
+      "Message" : "@here Grid lock is coming in 15 minutes."
+    },
+    {
+      "cronTime" : "CRON_TIME_2",
+      "Message" : "@here Coliseum is starting in 15 minutes"
+    }
+  ],
+  "eventChannel": "CHANNEL_ID",
+  "eventReminder": true
 }
 ```
+> Cron time is time specified for cron. Example : You coliseum is at 22:00, then put "00 15 21 * * *" for a reminder at 21:15.
+
 #### Bot token
 
 Follow this [guide](https://www.digitaltrends.com/gaming/how-to-make-a-discord-bot/) to create a token and know how to add the bot to your server.

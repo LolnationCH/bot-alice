@@ -53,7 +53,8 @@ function GetMessagesParameters(messages){
 client.on('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
   reminders.ConfigureAndStartWarningCronJobs(client);
-  reminders.ConfigureEventReminders(client);
+  if (config.eventReminder)
+    reminders.ConfigureEventReminders(client);
 });
 
 // Handles the users commands
