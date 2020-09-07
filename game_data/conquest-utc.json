@@ -1,17 +1,7 @@
 [
   {
-    "start_time": "8:00",
-    "end_time": "8:29",
-    "name": "Conquest"
-  },
-  {
-    "start_time": "15:30",
-    "end_time": "15:59",
-    "name": "Conquest"
-  },
-  {
-    "start_time": "17:30",
-    "end_time": "17:59",
+    "start_time": "12:00",
+    "end_time": "12:29",
     "name": "Conquest"
   },
   {
@@ -27,6 +17,16 @@
   {
     "start_time": "23:30",
     "end_time": "23:59",
+    "name": "Conquest"
+  },
+  {
+    "start_time": "25:30",
+    "end_time": "25:59",
+    "name": "Conquest"
+  },
+  {
+    "start_time": "27:30",
+    "end_time": "27:59",
     "name": "Conquest"
   }
 ]

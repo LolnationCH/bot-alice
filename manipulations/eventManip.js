@@ -1,5 +1,5 @@
-var guerrilla = require('../game_data/guerrilla.json');
-var conquest = require('../game_data/conquest.json');
+var guerrilla = require('../game_data/guerrilla-utc.json');
+var conquest = require('../game_data/conquest-utc.json');
 
 /**
  * Compare the current date with the time pass in argument.
