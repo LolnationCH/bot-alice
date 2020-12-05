@@ -61,7 +61,8 @@ Here's a example of the content inside a config.json :
       "Message" : "@here Coliseum is starting in 15 minutes"
     }
   ],
-  "eventChannel": "CHANNEL_ID",
+  "eventConquestChannel": "CHANNEL_ID",
+  "eventGuerillaChannel": "CHANNEL_ID",
   "eventReminder": true
 }
 ```

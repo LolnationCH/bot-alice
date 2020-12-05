@@ -37,16 +37,16 @@ function TimeHourToCronTime(strHhmm, minutesMinus=3){
 function ConfigureEventReminders(client){
   conquest.forEach((x) => {
     let scheduledMessage = new cron.CronJob(TimeHourToCronTime(x.start_time), () => {
-      var eventChannel = client.channels.cache.get(config.eventChannel);
-      eventChannel.send(`3 minutes before ${x.name}`);
+      var eventConquestChannel = client.channels.cache.get(config.eventConquestChannel);
+      eventConquestChannel.send(`3 minutes before ${x.name}`);
     });
     eventScheduledMessages.push(scheduledMessage);
   });
 
   guerilla.forEach((x) => {
     let scheduledMessage = new cron.CronJob(TimeHourToCronTime(x.start_time), () => {
-      var eventChannel = client.channels.cache.get(config.eventChannel);
-      eventChannel.send(`3 minutes before ${x.name}`);
+      var eventGuerillaChannel = client.channels.cache.get(config.eventGuerillaChannel);
+      eventGuerillaChannel.send(`3 minutes before ${x.name}`);
     });
     eventScheduledMessages.push(scheduledMessage);
   });
