@@ -2,44 +2,10 @@ const Discord = require('discord.js');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 
 // Bot code
-const helpMsgs = require('./helpMsg');
-const GmCmds = require('./commands/gm_cmds');
-const MemberCmds = require('./commands/member_cmds');
 const reminders = require('./reminders');
 
-// Bot data
+// Bot config
 const config = require('./usr_data/config.json');
-const AccessLevel = {
-  "GM" : "0",
-  "MEMBER" : "1",
-  "NONE" : "-1"
-}
-
-/**
- * Returns the AccessLevel of the user. To be use with comparaison to the object.
- * @param {Collection<String>} memberRoles
- * @returns access level
- */
-function CalculateAccessLevel(memberRoles){
-  var IsGm = false;
-  config.roles.gms.forEach((x) => {
-    if (memberRoles.cache.has(x))
-      IsGm = true;
-  })
-  if (IsGm)
-    return AccessLevel["GM"];
-
-  var IsMember = false;
-  config.roles.members.forEach((x) => {
-    if (memberRoles.cache.has(x))
-      IsMember = true;
-  })
-  if (IsMember)
-    return AccessLevel["MEMBER"];
-
-  return AccessLevel["NONE"];
-  
-}
 
 /**
  * Calculate the prefix, command and option the user pass to the bot.
@@ -52,6 +18,7 @@ function GetMessagesParameters(messages){
 
 client.on('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
+
   reminders.ConfigureAndStartWarningCronJobs(client);
   if (config.eventReminder)
     reminders.ConfigureEventReminders(client);
@@ -66,27 +33,11 @@ client.on('message', msg => {
   var messages = msg.content.split(" ");
   const [prefix, command, optionArr] = GetMessagesParameters(messages);
 
-  // Get message access level
-  const access_level = CalculateAccessLevel(msg.member.roles);
+  if (prefix === config.prefix) {
 
-  // Check if user has access to the bot
-  if (access_level !== AccessLevel["NONE"] &&
-      prefix === config.prefix)
-  {
-    // Execute the command the user wants if he has the right to.
-    var hasHandledCommand = false;
-    if (access_level === AccessLevel["GM"]) {
-      hasHandledCommand = GmCmds.HandleGmCommands(msg, command, optionArr);
-    }
-    if (!hasHandledCommand) {
-      hasHandledCommand = MemberCmds.HandleMembersCommands(msg, command, optionArr);
-    }
-
-    // Send help message if the message wasn't handled.
-    if (!hasHandledCommand) {
-      msg.reply(helpMsgs.GetHelpMessage("mainHelpMessage"));
-      msg.delete({timeout:1000});
-    }
+  }
+  else {
+    msg.delete({timeout:1000});
   }
 });
 
