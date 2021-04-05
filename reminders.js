@@ -9,7 +9,7 @@ var scheduledMessages = [];
 var eventScheduledMessages = []
 
 function ConfigureAndStartWarningCronJobs(client){
-  config.wanings.forEach((x) => {
+  config.warnings.forEach((x) => {
     let scheduledMessage = new cron.CronJob(x.cronTime, () => {
       var announcements = client.channels.cache.get(config.warningChannel);
       announcements.send(x.Message);
@@ -34,6 +34,10 @@ function TimeHourToCronTime(strHhmm, minutesMinus=3){
   return `00 ${minutes-minutesMinus} ${hours} * * *`;
 }
 
+/**
+ * Set the reminders for the guerrilla and conquest events
+ * @param {Discord.Client} client
+ */
 function ConfigureEventReminders(client){
   conquest.forEach((x) => {
     let scheduledMessage = new cron.CronJob(TimeHourToCronTime(x.start_time), () => {

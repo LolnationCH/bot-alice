@@ -3,6 +3,7 @@ const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 
 // Bot code
 const reminders = require('./reminders');
+const handleCommands = require('./handleCommands');
 
 // Bot config
 const config = require('./usr_data/config.json');
@@ -34,9 +35,7 @@ client.on('message', msg => {
   const [prefix, command, optionArr] = GetMessagesParameters(messages);
 
   if (prefix === config.prefix) {
-
-  }
-  else {
+    handleCommands.HandleCommands(msg, command, optionArr);
     msg.delete({timeout:1000});
   }
 });
